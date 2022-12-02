@@ -1,3 +1,19 @@
+<!--
+  index.html - the very first file that is loaded, as per usual.
+  When application is opened, initially index.html start to render
+   and it will render with empty <app-root></app-root> - because Angular
+   app is still to be loaded (you can test that easily with CRTL + U - that is
+   initial content that browser see). That was the big bottleneck for the SEO of SPA apps.
+
+  Once the Angular app is loaded, it will dynamically populate the
+    content to the <app-root></app-root> of the index.html.
+
+  Why is an error not thrown when index.html comes to <app-root></app-root> tag?
+   Reason is, index.html is not an Angular template file, it is pure html,
+   you can place any element inside it and it will never throw an error.
+   But for Angular template files, during compile time it checks if is defined or
+   not and throws compile time error if not defined.
+-->
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,6 +24,9 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-  <app-root></app-root>
+  [index.html] rendering app-root below
+  <div style="border: 1px solid black; width: 95%; margin-left: auto; margin-right: auto;">
+    <app-root></app-root>
+  </div>
 </body>
 </html>

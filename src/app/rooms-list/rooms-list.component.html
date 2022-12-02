@@ -1,0 +1,96 @@
+<p>rooms-list works!</p>
+<h2>{{title}}</h2>
+<table>
+  <tr>
+    <th>index</th>
+    <th>even/odd</th>
+    <th>Room Number</th>
+    <th>Room Type</th>
+    <th>Price</th>
+    <th>Amenities</th>
+    <th>Check In Time</th>
+    <th>Rating</th>
+    <th>Is last</th>
+    <th>Count if is Last</th>
+    <th>Select Room</th>
+  </tr>
+  <!--Directive examples-->
+  <!--*ngIf
+        Actually removes element from the dom as opposed to hiding it.-->
+  <!--*ngFor
+        NgFor has some variables that are part of id (even, odd, last, index). There are more
+        if you look at the common.d.ts file-->
+  <!--Also an ngClass example. You can use logic/pass variables to determine what class you want to apply-->
+  <tr
+    [ngClass]="e ? 'even' : 'odd'"
+    *ngFor="let room of rooms; let e = even; let o = odd; let l = last; let i = index; let c = count; let f = first;">
+    <td>{{i}}</td>
+    <!--you can put multiple pipes in a ternary operation like so-->
+    <td>{{e ? ("Even" | uppercase) : ("Odd" | uppercase) }} {{f ? "Is first" : ""}}</td>
+    <td>{{room.roomNumber}}</td>
+    <td>{{room.roomType}}</td>
+    <td>{{room.price | currency : 'USD'}}</td>
+    <td>{{room.amenities}}</td>
+    <!--This td element has an example of a pipe-->
+    <!--Pipes are used for data transformation. They dont' changge the actual object though
+        Angular has built-in pipes but you can make your own too.
+        some Built in pipes (there are more):
+        DatePipe
+        UpperCasePipe
+        LowerCasePipe
+        CurrencyPipe
+        DecimalPipe
+        PercentPipe
+        JsonPipe -- shows object as json object. Useful for debuggin
+        SlicePipe -- slices array into first index and last index in the frontend {{data | slice :first(inclusive):last(exclusive)}}.
+                      remember that it's a pipe. So it won't change the data, just how it's represented in the frontend.
+        AsyncPipe
+        NumberPipe
+        Synax is {{ data | pipe : 'options (and/or params, i think)'}} like below
+    -->
+    <td>{{room.checkInTime | date : 'short'}}</td>
+    <!--number pipe. Options are there to format the number further-->
+    <td>{{room.rating | number : '1.0-0'}}</td>
+    <td>{{l ? "Yes" : "No"}}</td>
+    <td *ngIf="l; else blanks">{{c}} / Last &lt;td&gt; </td>
+    <ng-template #blanks>&nbsp;</ng-template>
+    <td>
+      <button class="btn btn-primary" (click)="selectRoom(room)">
+        Select Room
+      </button>
+    </td>
+  </tr>
+</table>
+  <!--Why don't some directives don't use `*`? Generally, that's the character that differentiates attribute
+      directives from structural directives.
+      Structural Directives use *
+      Attribute Directives don't use *
+      Example:
+      *ngIf,*ngFor,*ngSwitchCase are structural Directives
+      ngClass, ngStyle, ngSwitch are attribute directives
+
+      Structural directives can modify the DOM (adds/modifies/deletes elements, like adding/removing table rows).
+      Meanwhile attribute directives can also modify the dom, but CAN'T add/remove elements (hide maybe, but not removing)
+      from the dom.
+
+      The star doesn't necessarily make a structural directive for. It's there mainly to be used as
+      'structural directive shorthand' (see image: [projectroot]/referenceImages/structuralDirectiveShorthand.png)
+      So you could make structural directives without the '*' shorthands but they're annoying to write.
+      Example:
+      <div
+        *ngFor="let hero of heroes; let i=index; let odd=odd; trackBy: trackById"
+        [class.odd]="odd">
+        ({{i}}) {{hero.name}}
+      </div>
+
+      turns into:
+
+      <ng-template ngFor let-hero [ngForOf]="heroes"
+        let-i="index" let-odd="odd" [ngForTrackBy]="trackById">
+        <div [class.odd]="odd">
+          ({{i}}) {{hero.name}}
+        </div>
+      </ng-template>
+
+      also keep in mind, one structural directive per element.
+    -->

@@ -1,0 +1,46 @@
+[RoomsComponent]
+<!--Example of Interpolation.
+    There's a variable in the rooms.component.ts file
+    which gets represented here with this syntax:-->
+<h1>Welcome to {{hotelName}}</h1>
+[HeaderComponent]
+<app-header></app-header>
+[end HeaderComponent]
+<div [hidden]="hideRooms">
+  <p>Number of rooms:</p>
+  <!--Example of property binding syntax (remember the square brackets).
+  property binding works with any valid html tag-->
+  <!--Also example of ngStyle. You can use logic/pass variables.-->
+  <!--Also example of *ngIf directive. Notice the `*` denoting that it's a structural directive-->
+  <div
+    *ngIf="rooms.availableRooms > 0"
+    [ngStyle]="{'color': rooms.availableRooms > 0 ? 'green' : 'red'}"
+    [innerText]="numberOfRooms"></div>
+</div>
+
+<!--
+    Difference between interpolation and property binding?
+    Property binding actually changes the dom and keeps data types,
+    while interpolation always results in strings in the html.
+-->
+
+<!--****************************************************************************-->
+
+<!--Example of event binding. Notice the parentheses in `(click)`-->
+<button (click)="toggle()">toggle</button>
+
+<!--Example of using another component within a component (app-rooms-list within app-rooms)
+    Notice that we're using component communication (with the @Input decorator in app-rooms-list)
+    @Input rooms in app-rooms-list is getting its array from roomList in app-rooms.
+    -->
+<div *ngIf="selectedRoom">You have selected: Room #{{selectedRoom.roomNumber}}</div>
+
+<div>
+  <button (click)="addRoom()">Add A Room</button>
+</div>
+
+<div *ngIf="rooms.totalRooms > 0">
+  <app-rooms-list [rooms]="roomList" [title]="title" (roomSelected)="selectRoom($event)"></app-rooms-list>
+</div>
+
+
